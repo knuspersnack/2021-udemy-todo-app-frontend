@@ -5,6 +5,7 @@ class TodoApp extends Component {
     return (
       <div className="">
         <LoginComponent />
+        <WelcomeComponent />
       </div>
     )
   }
@@ -40,14 +41,12 @@ class LoginComponent extends Component {
     }
   }
 
-
   render() {
     return (
       <div>
-        <LoginMessage
-          hasFailed={this.state.hasLoginFailed}
-          isSuccessful={this.state.showSuccessMessage}
-        />
+        {/*Cool trick as a replacement for ng-if*/}
+        {this.state.hasLoginFailed && <div>Invalid Credentials</div>}
+        {this.state.showSuccessMessage && <div>Login successful</div>}
 
         User:
         <input type="text" name="username" value={this.state.username} onChange={this.handleChange} />
@@ -61,15 +60,10 @@ class LoginComponent extends Component {
   }
 }
 
-//Functional component
-function LoginMessage(props) {
-  if (props.hasFailed) {
-    return <div>Invalid Credentials</div>
+class WelcomeComponent extends Component {
+  render() {
+    return <div>Welcome to in28Minutes</div>
   }
-  if (props.isSuccessful) {
-    return <div>Login successful</div>
-  }
-  return null;
 }
 
 
