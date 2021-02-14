@@ -6,6 +6,7 @@ import ListTodosComponent from './ListTodosComponent';
 import LogoutComponent from './LogoutComponent';
 import WelcomeComponent from './WelcomeComponent';
 import FooterComponent from './FooterComponent';
+import ErrorComponent from './ErrorComponent';
 import AuthenticatedRoute from './AuthenticatedRoute';
 
 
@@ -32,8 +33,6 @@ class TodoApp extends Component {
   }
 }
 
-function ErrorComponent() {
-  return <div>An error occured!</div>
-}
+
 
 export default TodoApp;
