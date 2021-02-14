@@ -1,18 +1,19 @@
 class AuthenticationService {
-    authUserKey = 'authenticatedUser';
+    // ! remove or fix
+    // authUserKey = 'authenticatedUser';
 
     registerSuccessfulLogin(username, password) {
         console.log("User logged in successfully!")
-        sessionStorage.setItem(this.authUserKey, username);
+        sessionStorage.setItem('authenticatedUser', username);
     }
 
     logout() {
-        sessionStorage.removeItem(this.authUserKey);
+        sessionStorage.removeItem('authenticatedUser');
     }
 
     isUserLoggedIn() {
-        let user = sessionStorage.getItem(this.authUserKey)
-        return (user===null);
+        let user = sessionStorage.getItem('authenticatedUser')
+        return (user!==null);
     }
 }
 

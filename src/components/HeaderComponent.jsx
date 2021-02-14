@@ -23,4 +23,5 @@ class HeaderComponent extends Component {
     }
 }
 
+// * withRouter is important otherwise the nav wont update
 export default withRouter(HeaderComponent);
