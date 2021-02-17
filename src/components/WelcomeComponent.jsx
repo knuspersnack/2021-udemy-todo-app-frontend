@@ -28,7 +28,6 @@ class WelcomeComponent extends Component {
     retrieveWelcomeMessage() {
         HelloWorldService.executeHelloWorldService()
         .then(response => console.log(response));
-      
     }
 }
 
