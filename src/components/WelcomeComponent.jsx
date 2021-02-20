@@ -6,11 +6,20 @@ class WelcomeComponent extends Component {
     constructor(props) {
         super(props)
         this.retrieveWelcomeMessage = this.retrieveWelcomeMessage.bind(this);
+        this.handleSuccesfulResponse = this.handleSuccesfulResponse.bind(this);
+        this.handleError = this.handleError.bind(this);
+        this.state = {
+            welcomeMessage: '',
+            errorMessage: ''
+        }
     }
-    
+
     render() {
 
         return <>
+            <div className="alert alert-danger">
+                <span>{this.state.errorMessage}</span>
+            </div>
             <h1>Welcome!</h1>
             <div className="container">
                 {/* The parameter from the URL will be read  */}
@@ -18,16 +27,26 @@ class WelcomeComponent extends Component {
                 <span>You can manage your todos <Link to="/todos">here</Link></span>
             </div>
             <div className="container">
-                {/* The parameter from the URL will be read  */}
-                <span>Click here </span>
                 <button onClick={this.retrieveWelcomeMessage} className="btn btn-success">Get Welcome</button>
+            </div>
+            <div className="container">
+                <span>{this.state.welcomeMessage}</span>
             </div>
         </>
     }
 
     retrieveWelcomeMessage() {
-        HelloWorldService.executeHelloWorldService()
-        .then(response => console.log(response));
+ /*        HelloWorldService.executeHelloWorldPathVariableService(this.props.match.params.name)
+            .then(response => this.handleSuccesfulResponse(response))
+            .catch(error => this.handleError(error)); */
+    }
+
+    handleSuccesfulResponse(response) {
+        this.setState({ welcomeMessage: response.data.message });
+    }
+
+    handleError(error) {
+        this.setState({ errorMessage: error.response.data.message });
     }
 }
 
