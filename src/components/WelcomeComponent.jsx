@@ -10,16 +10,18 @@ class WelcomeComponent extends Component {
         this.handleError = this.handleError.bind(this);
         this.state = {
             welcomeMessage: '',
-            errorMessage: ''
+            errorMessage: null
         }
     }
 
     render() {
 
         return <>
-            <div className="alert alert-danger">
-                <span>{this.state.errorMessage}</span>
-            </div>
+            {this.state.errorMessage
+                && <div className="alert alert-danger">
+                    <span>{this.state.errorMessage}</span>
+                </div>
+            }
             <h1>Welcome!</h1>
             <div className="container">
                 {/* The parameter from the URL will be read  */}
@@ -36,9 +38,9 @@ class WelcomeComponent extends Component {
     }
 
     retrieveWelcomeMessage() {
- /*        HelloWorldService.executeHelloWorldPathVariableService(this.props.match.params.name)
-            .then(response => this.handleSuccesfulResponse(response))
-            .catch(error => this.handleError(error)); */
+        /*        HelloWorldService.executeHelloWorldPathVariableService(this.props.match.params.name)
+                   .then(response => this.handleSuccesfulResponse(response))
+                   .catch(error => this.handleError(error)); */
     }
 
     handleSuccesfulResponse(response) {
