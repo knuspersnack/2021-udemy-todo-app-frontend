@@ -9,8 +9,11 @@ class ListTodosComponent extends Component {
       message: null,
       todos: []
     }
-    this.deleteTodoClicked = this.deleteTodoClicked.bind(this);
+ 
     this.refreshTodoList = this.refreshTodoList.bind(this);
+    this.updateTodoClicked = this.updateTodoClicked.bind(this);
+    this.deleteTodoClicked = this.deleteTodoClicked.bind(this);
+
     console.log('Constructor executed');
   }
 
@@ -41,6 +44,11 @@ class ListTodosComponent extends Component {
     )
   }
 
+  updateTodoClicked(id) {
+    console.log("update: " + id);
+    this.props.history.push(`/todos/${id}`);
+  }
+
   render() {
     // The parameter from the URL will be read 
     console.log('Render executed - ToDos available: ' + this.state.todos.length);
@@ -53,8 +61,9 @@ class ListTodosComponent extends Component {
             <thead>
               <tr>
                 <th>Description</th>
-                <th>Done?</th>
                 <th>Is Completed?</th>
+                <th>Target date</th>
+                <th>Update</th>
                 <th>Delete</th>
               </tr>
             </thead>
@@ -66,6 +75,7 @@ class ListTodosComponent extends Component {
                       <td>{todo.description}</td>
                       <td>{todo.done.toString()}</td>
                       <td>{todo.targetDate.toString()}</td>
+                      <td><button onClick={() => this.updateTodoClicked(todo.id)} className="btn btn-success">Update</button></td>
                       <td><button onClick={() => this.deleteTodoClicked(todo.id)} className="btn btn-warning">Delete</button></td>
                     </tr>
                 )
