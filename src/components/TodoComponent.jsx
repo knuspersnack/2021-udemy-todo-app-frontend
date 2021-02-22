@@ -1,18 +1,29 @@
 import React, { Component } from 'react';
 import { DateTime } from 'luxon';
 import { Form, Formik, Field, ErrorMessage } from 'formik';
+import TodoDataService from '../api/todo/TodoDataService';
+import AuthenticationService from '../service/AuthenticationService';
 
 class TodoComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
             id: this.props.match.params.id,
-            description: 'Learn...',
+            description: 'Loading...',
             isDone: false,
             targetDate: DateTime.now().toISODate()
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.validate = this.validate.bind(this);
+    }
+
+    componentDidMount() {
+        TodoDataService.retrieveTodo(AuthenticationService.getLoggedInUserName(), this.state.id)
+        .then(response => this.setState({
+            description: response.data.description,
+            isDone: response.data.done,
+            targetDate: DateTime.fromFormat(response.data.targetDate, "yyyy-MM-dd").toISODate()
+        }));
     }
 
     onSubmit(values) {
@@ -46,7 +57,9 @@ class TodoComponent extends Component {
                         onSubmit={this.onSubmit}
                         validateOnChange={false}
                         validateOnBlur={false}
-                        validate={this.validate}>
+                        validate={this.validate}
+                        //otherwise the change of state does not have an effect
+                        enableReinitialize={true}>
                         {
                             (props) => (
                                 <Form>
