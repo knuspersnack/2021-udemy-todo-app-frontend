@@ -9,7 +9,7 @@ class TodoComponent extends Component {
         super(props);
         this.state = {
             id: this.props.match.params.id,
-            description: 'Loading...',
+            description: '',
             isDone: false,
             targetDate: DateTime.now().toISODate()
         }
@@ -18,27 +18,47 @@ class TodoComponent extends Component {
     }
 
     componentDidMount() {
+        if(this.state.id === -1) {
+            return;
+        }
         TodoDataService.retrieveTodo(AuthenticationService.getLoggedInUserName(), this.state.id)
-        .then(response => this.setState({
-            description: response.data.description,
-            isDone: response.data.done,
-            targetDate: DateTime.fromFormat(response.data.targetDate, "yyyy-MM-dd").toISODate()
-        }));
+            .then(response => this.setState({
+                description: response.data.description,
+                isDone: response.data.done,
+                targetDate: (response.data.targetDate)
+                    ? DateTime.fromFormat(response.data.targetDate, "yyyy-MM-dd").toISODate()
+                    : null
+            }));
     }
 
     onSubmit(values) {
-        console.log(values);
+        let userName = AuthenticationService.getLoggedInUserName();
+        const todo = {
+            id: this.state.id,
+            description: values.description,
+            isDone: values.isDone,
+            targetDate: values.targetDate
+        }
+
+        if(this.state.id === -1) {
+            TodoDataService.createTodo(userName, todo)
+            .then(() => this.props.history.push('/todos'));
+        }
+
+        TodoDataService.updateTodo(userName, this.state.id, todo)
+        .then(() => this.props.history.push('/todos'));
+
     }
 
     validate(values) {
         let errors = {};
-        if(!values.description) {
+        if (!values.description) {
             errors.description = 'Enter a Description';
-        } else if(values.description.length<5) {
+        } else if (values.description.length < 5) {
             errors.description = 'Enter at least 5 Charcters in Description';
         }
 
-        if(!DateTime.fromISO(values.targetDate).isValid) {
+        if (!DateTime.fromISO(values.targetDate).isValid) {
             errors.targetDate = 'Enter a valid date';
         }
 

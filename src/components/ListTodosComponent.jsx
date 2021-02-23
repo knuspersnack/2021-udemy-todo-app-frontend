@@ -9,10 +9,11 @@ class ListTodosComponent extends Component {
       message: null,
       todos: []
     }
- 
+
     this.refreshTodoList = this.refreshTodoList.bind(this);
     this.updateTodoClicked = this.updateTodoClicked.bind(this);
     this.deleteTodoClicked = this.deleteTodoClicked.bind(this);
+    this.addTodoClicked = this.addTodoClicked.bind(this);
 
     console.log('Constructor executed');
   }
@@ -49,6 +50,11 @@ class ListTodosComponent extends Component {
     this.props.history.push(`/todos/${id}`);
   }
 
+  addTodoClicked() {
+    console.log("create new");
+    this.props.history.push('/todos/-1');
+  }
+
   render() {
     // The parameter from the URL will be read 
     console.log('Render executed - ToDos available: ' + this.state.todos.length);
@@ -82,6 +88,11 @@ class ListTodosComponent extends Component {
               }
             </tbody>
           </table>
+          <div className="row">
+              <div class="col text-center">
+                <button onClick={this.addTodoClicked} className="btn btn-dark btn-lg">Create New Todo</button>
+              </div>
+            </div>
         </div>
       </div>
     )
