@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import HelloWorldService from '../../src/api/todo/HelloWorldService'
+import WelcomeMessageService from '../api/todo/WelcomeMessageService'
 
 class WelcomeComponent extends Component {
     constructor(props) {
@@ -28,6 +28,7 @@ class WelcomeComponent extends Component {
                 <span>Welcome {this.props.match.params.name}. </span>
                 <span>You can manage your todos <Link to="/todos">here</Link></span>
             </div>
+            <br/>
             <div className="container">
                 <button onClick={this.retrieveWelcomeMessage} className="btn btn-success">Get Welcome</button>
             </div>
@@ -38,9 +39,9 @@ class WelcomeComponent extends Component {
     }
 
     retrieveWelcomeMessage() {
-        /*        HelloWorldService.executeHelloWorldPathVariableService(this.props.match.params.name)
-                   .then(response => this.handleSuccesfulResponse(response))
-                   .catch(error => this.handleError(error)); */
+        WelcomeMessageService.getWelcomeMessage(this.props.match.params.name)
+            .then(response => this.handleSuccesfulResponse(response))
+            .catch(error => this.handleError(error));
     }
 
     handleSuccesfulResponse(response) {
@@ -48,7 +49,15 @@ class WelcomeComponent extends Component {
     }
 
     handleError(error) {
-        this.setState({ errorMessage: error.response.data.message });
+        let errorMessage = 'ERROR: ';
+        if (error.message) {
+            errorMessage += error.message;
+        }
+
+        if (error.response && error.response.data) {
+            errorMessage += error.message.data.message;
+        }
+        this.setState({ errorMessage: errorMessage });
     }
 }
 
