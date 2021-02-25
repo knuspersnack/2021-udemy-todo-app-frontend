@@ -26,7 +26,7 @@ class WelcomeComponent extends Component {
             <div className="container">
                 {/* The parameter from the URL will be read  */}
                 <span>Welcome {this.props.match.params.name}. </span>
-                <span>You can manage your todos <Link to="/todos">here</Link></span>
+                <span>You can manage your todos <Link to="/todos">HERE</Link></span>
             </div>
             <br/>
             <div className="container">
@@ -50,11 +50,11 @@ class WelcomeComponent extends Component {
 
     handleError(error) {
         let errorMessage = 'ERROR: ';
-        if (error.message) {
+        if (error?.message) {
             errorMessage += error.message;
         }
 
-        if (error.response && error.response.data) {
+        if (error?.response && error?.response.data) {
             errorMessage += error.message.data.message;
         }
         this.setState({ errorMessage: errorMessage });
