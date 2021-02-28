@@ -2,28 +2,56 @@ import axios from 'axios';
 
 class AuthenticationService {
 
-    executeBasicAuthenticationService(username, password) {
-        return axios.get('http://localhost:8080/basicauth', {
-            headers: {
-                'Authorization': this.createBasicAuthToken(username, password)
-            }
-        })
+    //BASIC AUTH
+
+    /*     executeBasicAuthenticationService(username, password) {
+            return axios.get('http://localhost:8080/basicauth', {
+                headers: {
+                    'Authorization': this.createBasicAuthToken(username, password)
+                }
+            })
+        } */
+
+
+    /*     createBasicAuthToken(username, password) {
+            //windows btoa ecodes the credentials using base64 (base 64 encoding)
+            return 'Basic ' + window.btoa(username + '+' + password);
+        } */
+
+    /*     registerSuccessfulLogin(username, password) {
+ 
+    sessionStorage.setItem('authenticatedUser', username);
+ 
+    console.log("Installing Axios Basic Auth Interceptor..")
+    this.setupAxiosInterceptors(this.createBasicAuthToken(username, password));
+ 
+    console.log("User logged in successfully!")
+} */
+
+    //JWT AUTH ------------------------------------------
+
+    executeJwtAuthenticationService(username, password) {
+        return axios.post('http://localhost:8080/authenticate', {
+            username,
+            password
+        });
     }
 
-    createBasicAuthToken(username, password) {
-        //windows btoa ecodes the credentials using base64 (base 64 encoding)
-        return 'Basic ' + window.btoa(username + '+' + password);
+    createJwtToken(token) {
+        return 'Bearer ' + token;
     }
 
-    registerSuccessfulLogin(username, password) {
+    registerSuccessfulLoginForJwt(username, token) {
 
         sessionStorage.setItem('authenticatedUser', username);
 
-        console.log("Installing Axios Auth Interceptor..")
-        this.setupAxiosInterceptors(this.createBasicAuthToken(username, password));
+        console.log("Installing Axios JWT Auth Interceptor..")
+        this.setupAxiosInterceptors(this.createJwtToken(token));
 
         console.log("User logged in successfully!")
     }
+
+    //------------------------------------------
 
     logout() {
         sessionStorage.removeItem('authenticatedUser');
