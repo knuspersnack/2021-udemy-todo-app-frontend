@@ -1,13 +1,28 @@
 import axios from 'axios';
 
 class AuthenticationService {
-    // ! remove or fix
-    // authUserKey = 'authenticatedUser';
+
+    executeBasicAuthenticationService(username, password) {
+        return axios.get('http://localhost:8080/basicauth', {
+            headers: {
+                'Authorization': this.createBasicAuthToken(username, password)
+            }
+        })
+    }
+
+    createBasicAuthToken(username, password) {
+        //windows btoa ecodes the credentials using base64 (base 64 encoding)
+        return 'Basic ' + window.btoa(username + '+' + password);
+    }
 
     registerSuccessfulLogin(username, password) {
-        console.log("User logged in successfully!")
+
         sessionStorage.setItem('authenticatedUser', username);
-        this.setupAxiosInterceptors();
+
+        console.log("Installing Axios Auth Interceptor..")
+        this.setupAxiosInterceptors(this.createBasicAuthToken(username, password));
+
+        console.log("User logged in successfully!")
     }
 
     logout() {
@@ -26,13 +41,7 @@ class AuthenticationService {
     }
 
     //Installs an Interceptor, that adds a auth header to every outgoing requests
-    setupAxiosInterceptors() {
-        let username = 'user';
-        let password = 'test';
-        //windows btoa ecodes the credentials using base64 (base 64 encoding)
-        let basicAuthHeader = 'Basic ' + window.btoa(`${username}:${password}`);
-
-        console.log("Installing Axios Auth Interceptor..")
+    setupAxiosInterceptors(basicAuthHeader) {
 
         axios.interceptors.request.use(
             (config) => {
